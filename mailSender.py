@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding:utf8
 import smtplib
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.header import Header
 import config
@@ -14,9 +15,18 @@ def mailSender(subject,text,receivers):
     sender = config.sender
 
     # receivers list
-    receivers = ",".join(receivers)
+    # receivers = ",".join(receivers)
+
+    # message
+    msgRoot = MIMEMultipart('related')
+    msgRoot['Subject'] = 'test message'
+
+    msgText = MIMEText('<b>Some <i>HTML</i> text</b> and an image.<br><img src="http://avatar.csdn.net/6/8/C/1_z_johnny.jpg"><br>good!','html','utf-8')
+    msgRoot.attach(msgText)
+
+
     message = MIMEText(text, 'plain', 'utf-8')
-    message['From'] = Header(mail_user, 'utf-8')
+    # message['From'] = Header(mail_user, 'utf-8') #代发
     message['To'] = Header(receivers, 'utf-8')
 
 
@@ -24,17 +34,18 @@ def mailSender(subject,text,receivers):
 
 
     try:
-            smtpObj = smtplib.SMTP()
-            smtpObj.connect(mail_host, 25)
-            smtpObj.login(mail_user, mail_pass)
-            smtpObj.sendmail(sender, receivers, message.as_string())
-            print "邮件发送成功"
-            return 'success'
+        smtpObj = smtplib.SMTP()
+        smtpObj.connect(mail_host, 25)
+        smtpObj.login(mail_user, mail_pass)
+        smtpObj.sendmail(sender, receivers, msgRoot.as_string())
+        print "邮件发送成功"
+        return 'success'
     except smtplib.SMTPException:
-            print "Error: 无法发送邮件"
-            return 'error'
+        print "Error: 无法发送邮件"
+        return 'error'
 
+# http://avatar.csdn.net/6/8/C/1_z_johnny.jpg
 
 if __name__ == '__main__':
 
-    mailSender('hhhh','hello',"['xxxxxx@qq.com','xxxx@139.com']")
+    mailSender('hhhh','hello',['xxxxx@qq.com','xxxx@gmail.com'])
