@@ -21,7 +21,7 @@ def mailSender(subject,text,receivers):
     msgRoot = MIMEMultipart('related')
     msgRoot['Subject'] = 'test message'
 
-    msgText = MIMEText('<b>Some <i>HTML</i> text</b> and an image.<br><img src="http://avatar.csdn.net/6/8/C/1_z_johnny.jpg"><br>good!','html','utf-8')
+    msgText = MIMEText('<b>Some <i>HTML</i> text</b> and an image.<br><img src="%s"><br>good!'% text,'html','utf-8')
     msgRoot.attach(msgText)
 
 
