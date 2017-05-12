@@ -6,7 +6,7 @@ from email.header import Header
 import config
 
 def mailSender(subject,text,receivers):
-
+    # 第三方 SMTP 服务
     mail_host = config.mail_host  # 设置服务器
     mail_user = config.mail_user  # 用户名
     mail_pass = config.mail_pass  # 口令
